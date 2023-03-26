@@ -10,7 +10,7 @@ export default function Search ({searchLabel, action, setKeyword}){
     }
     return(
         <div>
-            <input className="text-black" placeholder="search over internet" onChange={hadleOnChange}></input>
+            <input className="text-black" placeholder="Enter keyword" onChange={hadleOnChange}></input>
             <button className="btn-info" onClick={action}>{searchLabel}</button>
         </div>
     );

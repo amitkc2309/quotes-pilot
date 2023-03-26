@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -48,6 +49,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**").
                         allowedMethods("*").
+                        allowedHeaders("*").
                         allowedOrigins(frontEndAppOrigin);
             }
         };
@@ -64,6 +66,8 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 //.antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/register/**").permitAll()
                 .antMatchers("/logout/**").permitAll()
+                //react-js frontend will give CORS error if we don't add this (My precious 3 hours)
+                .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                 //.antMatchers("/quote/random/**").permitAll()
                 //.antMatchers("/quote/search/**").permitAll()
                 .antMatchers("/quote/delete-quote/**").access("hasAuthority('ROLE_ADMIN')")

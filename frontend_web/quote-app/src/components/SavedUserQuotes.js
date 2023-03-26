@@ -3,17 +3,17 @@ import React, { Component } from 'react';
 //import { quotes } from '../data/quotes';
 import { useState } from "react";
 import Search from './Search';
+import configData from "../config.json"
 
-function ListSeachedQuotes () {
+function SavedUserQuotes () {
     const [showQuotes, setShowQuotes] = useState(false);
-    const [keyword,setKeyword]=useState("");
     const [list, setList]=useState([]);
-    let URL="http://localhost:8080/quote/search?query=";
+    let URL=configData.BACKEND_URL+"/quote/quotes-all";
     function handleShowQuotes(){  
-        console.log("search started for keyword "+keyword);
-        URL=URL+keyword;
         let quotes=[];
-        quotes=axios.get(URL).then(
+        quotes=axios
+        .get(URL)
+        .then(
             res=>{
                 setList(res.data.map(
                     q=>        
@@ -39,12 +39,10 @@ function ListSeachedQuotes () {
     }  
     return(
         <div>
-            <Search searchLabel ={"List Quotes"} action={handleShowQuotes}
-            setKeyword={setKeyword}/>
-
+            <button className='btn' onClick={handleShowQuotes}>Show My quotes</button>
             {showQuotes && <ul className='d-flex flex-wrap list-group-flush'>{list}</ul>}
         </div>
     );    
 }
 
-export default ListSeachedQuotes;
+export default SavedUserQuotes;

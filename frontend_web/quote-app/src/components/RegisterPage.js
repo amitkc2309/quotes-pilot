@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
 import LoginPage from "./LoginPage";
+import configData from "../config.json"
+import { Link } from "react-router-dom";
 
 export default function RegisterPage(){
     const [user,setUser]=useState("");
@@ -13,7 +15,7 @@ export default function RegisterPage(){
     function handlePasswordEvent(event){
         setPassword(event.target.value);
     }
-    let URL="http://localhost:8080/register/";
+    let URL=configData.BACKEND_URL+"/register/";
     function handleRegister(event){
         event.preventDefault();
         axios.post(URL, {
@@ -33,7 +35,7 @@ export default function RegisterPage(){
         <div>
             <form onSubmit={handleRegister}>
                 <div className="form-group">
-                <input type="user" placeholder="Enter username" value={user} 
+                <input type="user" placeholder="Enter Username" value={user} 
                 onChange={handleUserEvent} className="form-control"/>
                 </div>
                 <div className="form-group">
@@ -43,7 +45,9 @@ export default function RegisterPage(){
                 <button type="submit" className="btn btn-primary">Register</button>
             </form>
             {response!=null && <p className="text-info">{response}</p>}
-            <button className="btn" onClick={LoginPage}>Go to Login!!</button>
+            <Link to="/login">
+                <button className="btn btn-info">Already have an Account? Login Here!!</button>
+            </Link>
         </div>
         
     );
