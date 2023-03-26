@@ -1,0 +1,4 @@
+frontend_web/quote-app/node_modules/
+backend/.idea
+backend/server.log
+backend/target/
