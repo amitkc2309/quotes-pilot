@@ -1,6 +1,7 @@
 import { Box, Tab, Tabs } from "@material-ui/core";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import GetSavedUserQuotes from "./GetSavedUserQuotes";
 import RandomQuote from "./RandomQuote";
 import SearchQuoteFromInternet from "./SearchQuoteFromInternet";
 
@@ -16,28 +17,28 @@ export default function Home(){
         navigate("/login");
     }
     return(
-        <div>
-            <div>
+        <div className="container">
+            <div className="row">
+            <div className="col-11">
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs value={value} onChange={handleTabChange} textColor="primary" indicatorColor="primary">
                 <Tab label="Search Quote" value={1}/>
                 <Tab label="Random Quote" value={2}/>
                 <Tab label="My Quotes"  value={3}/>
+                {/* <Tab label="Search saved Quotes"  value={4}/> */}
                 
              </Tabs>
-            
-             <div className="align-content-end">
-                <button className="btn btn-secondary" onClick={logout}>Log-Out</button>
-            </div>
-            
              
             </Box>
             {value ==1 && <SearchQuoteFromInternet/>}
             {value ==2 && <RandomQuote/>}
+            {value ==3 && <GetSavedUserQuotes/>}
             </div>
 
-            
-
+            <div className="col-1">
+                <button className="btn btn-outline-primary" onClick={logout}>Log-Out</button>
+            </div>
+            </div>
         </div>
         
         

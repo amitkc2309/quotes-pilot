@@ -3,6 +3,7 @@ import { useState } from "react";
 import LoginPage from "./LoginPage";
 import configData from "../config.json"
 import { Link } from "react-router-dom";
+import { Card } from "@material-ui/core";
 
 export default function RegisterPage(){
     const [user,setUser]=useState("");
@@ -32,8 +33,9 @@ export default function RegisterPage(){
     }
 
     return(
-        <div>
-            <form onSubmit={handleRegister}>
+        <div className="container col-5 ">
+        <div className='card border-0' style={{width: '20rem'}}>
+        <form onSubmit={handleRegister}>
                 <div className="form-group">
                 <input type="user" placeholder="Enter Username" value={user} 
                 onChange={handleUserEvent} className="form-control"/>
@@ -48,6 +50,8 @@ export default function RegisterPage(){
             <Link to="/login">
                 <button className="btn btn-info">Already have an Account? Login Here!!</button>
             </Link>
+        </div>
+            
         </div>
         
     );

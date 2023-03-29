@@ -4,15 +4,23 @@ import React, { Component } from 'react';
 import { useState } from "react";
 import Search from './Search';
 import configData from "../config.json"
+import Quote from '../services/Quote';
 
-function SavedUserQuotes () {
+function GetSavedUserQuotes () {
     const [showQuotes, setShowQuotes] = useState(false);
     const [list, setList]=useState([]);
     let URL=configData.BACKEND_URL+"/quote/quotes-all";
     function handleShowQuotes(){  
         let quotes=[];
+        const token=localStorage.getItem('jwtToken');
+        const config = {
+            headers: { 
+                'Authorization': `Bearer ${token}` ,
+                'Access-Control-Allow-Origin': '*'
+            }
+        };
         quotes=axios
-        .get(URL)
+        .get(URL,config)
         .then(
             res=>{
                 setList(res.data.map(
@@ -25,6 +33,11 @@ function SavedUserQuotes () {
                             <p>{q.text}</p>
                             <footer className="blockquote-footer">{q.author}</footer>
                         </blockquote>
+                        <div className='card-footer'>                        
+                            <button className='btn btn-danger' onClick={(event)=>handleDeleteQuote(event,q)}>
+                                Remove Quote
+                            </button>
+                        </div> 
                         </div>
                         </div>
                     </li>           
@@ -32,11 +45,19 @@ function SavedUserQuotes () {
                  );
             }
         ).catch((err) => {
-            console.error("err");
+            console.error(err);
           });
          
         setShowQuotes(true);
     }  
+
+    function handleDeleteQuote(event,quote){
+        Quote.removeQuote(quote);
+        event.target.setAttribute("disabled", "disabled");
+        event.target.innerHTML="Removed";
+        event.target.parentNode.parentNode.parentNode.remove(event.target.parentNode.parentNode);
+    }
+
     return(
         <div>
             <button className='btn' onClick={handleShowQuotes}>Show My quotes</button>
@@ -45,4 +66,4 @@ function SavedUserQuotes () {
     );    
 }
 
-export default SavedUserQuotes;
+export default GetSavedUserQuotes;

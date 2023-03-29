@@ -38,7 +38,8 @@ export default function LoginPage(){
     }
 
     return(
-        <div>
+        <div className="container col-5">
+        <div className='card border-0' style={{width: '20rem'}}>
            <form onSubmit={handleLogin}>
                 <div className="form-group">
                 <input type="user" placeholder="Enter Username" value={user} 
@@ -54,6 +55,7 @@ export default function LoginPage(){
             <Link to="/register">
                 <button className="btn btn-info">If you are new, Register Here!!</button>
             </Link>           
+        </div>
         </div>
         
     );

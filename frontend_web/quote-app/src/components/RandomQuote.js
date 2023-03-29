@@ -2,8 +2,8 @@ import axios from 'axios';
 import React, { Component } from 'react';
 //import { quotes } from '../data/quotes';
 import { useState } from "react";
-import Search from './Search';
 import configData from "../config.json"
+import Quote from '../services/Quote';
 
 function RandomQuote () {
     const [showQuotes, setShowQuotes] = useState(false);
@@ -34,7 +34,13 @@ function RandomQuote () {
                         <p>{q.text}</p>
                         <footer className="blockquote-footer">{q.author}</footer>
                     </blockquote>
-                    </div></div>
+                    <div className='card-footer'>                        
+                            <button className='btn btn-outline-primary' onClick={(event)=>handleSaveQuote(event,q)}>
+                                Save Quote
+                            </button>
+                        </div> 
+                    </div>
+                    </div>
                 )
             }
         ).catch((err) => {
@@ -42,6 +48,12 @@ function RandomQuote () {
           });
          
         setShowQuotes(true);
+    }
+    function handleSaveQuote(event,quote){
+        Quote.saveQuote(quote);
+        event.target.setAttribute("disabled", "disabled");
+        event.target.innerHTML="Saved";
+
     }  
     return(
         <div>
