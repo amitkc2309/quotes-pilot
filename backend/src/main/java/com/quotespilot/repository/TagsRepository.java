@@ -15,4 +15,15 @@ public interface TagsRepository extends JpaRepository<Tags,Long> {
     @Query(value = "select t.* from tags t where t.tag in (:tags)"
             , nativeQuery = true)
     List<Tags> findTagsByTag(@Param("tags") List<String> tag);
+
+    @Query(value = "select t.* from " +
+            "tags t " +
+            "inner join user_quote uq " +
+            "inner join user u " +
+            "inner join quote_tag qt " +
+            "on qt.tag_id =t.id " +
+            "and uq.quote_id=qt.quote_id " +
+            "and u.id=uq.user_id " +
+            "and u.name=:user " ,nativeQuery = true)
+    List<Tags> findTagsByUsers(@Param("user") String user);
 }

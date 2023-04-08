@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
@@ -43,7 +44,8 @@ public class QuoteRestController {
     @GetMapping("/quotes-all")
     public ResponseEntity<List<QuoteDTO>> getAllSavedQuotesForUser(){
         logger.info("**********************************getAllSavedQuotesForUser");
-         List<Quote> quotes=quoteService.getAllSavedQuotesForUser();
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+         List<Quote> quotes=quoteService.getAllSavedQuotesForUser(userName);
         List<QuoteDTO> dtos = quotes.stream().map(q -> {
             QuoteDTO dto = new QuoteDTO();
             dto.setId(q.getId().intValue());
@@ -58,7 +60,8 @@ public class QuoteRestController {
     //http://localhost:8080/quote/tags
     @GetMapping("/tags")
     public ResponseEntity<List<TagsDTO>> getAllSavedTagsForUser(){
-        List<Tags> tags = quoteService.getAllSavedTagsForUser();
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<Tags> tags = quoteService.getAllSavedTagsForUser(userName);
         List<TagsDTO> dtos = tags.stream().map(t -> {
             TagsDTO dto = new TagsDTO();
             dto.setId(t.getId());
@@ -71,7 +74,8 @@ public class QuoteRestController {
     //http://localhost:8080/quote/search-by-tag?tag=tag3
     @GetMapping("/search-by-tag")
     public ResponseEntity<List<QuoteDTO>> getSavedQuotesByTagForUser(@RequestParam String tag){
-        List<Quote> qt = quoteService.getSavedQuotesByTagForUser(tag);
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<Quote> qt = quoteService.getSavedQuotesByTagForUser(userName,tag);
         logger.info(tag+" ********************** "+qt.size());
         List<QuoteDTO> dtos = qt.stream().map(q -> {
             QuoteDTO dto = new QuoteDTO();
@@ -87,14 +91,16 @@ public class QuoteRestController {
     //http://localhost:8080/quote/add-quote/
     @PostMapping("/add-quote/")
     public ResponseEntity addQuoteForUser(@RequestBody QuoteDTO quoteDTO){
-        Long createdQuoteId=quoteService.addQuoteForUser(quoteDTO);
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        Long createdQuoteId=quoteService.addQuoteForUser(userName,quoteDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdQuoteId);
     }
     
     //http://localhost:8080/remove-quote/{id}/
     @DeleteMapping("/remove-quote/{id}")
     public ResponseEntity removeSavedQuotesForUser(@PathVariable("id") Long id){
-       quoteService.removeSavedQuotesForUser(id);
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+       quoteService.removeSavedQuotesForUser(userName,id);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 

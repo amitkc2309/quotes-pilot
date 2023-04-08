@@ -59,14 +59,14 @@ public class QuotesServiceTest {
     @Test
     public void testgetAllSavedQuotesForUser(){
         when(quoteRepository.findAllByUsers("testUser")).thenReturn(quoteList);
-        Long id=quoteService.getAllSavedQuotesForUser().get(0).getId();
+        Long id=quoteService.getAllSavedQuotesForUser("testUser").get(0).getId();
         assertEquals(Long.valueOf(1),id);
     }
 
     @Test
     public void testgetAllSavedTagsForUser(){
-        when(quoteService.getAllSavedQuotesForUser()).thenReturn(quoteList);
-        String t1 =quoteService.getAllSavedTagsForUser().get(0).getTag();
+        when(quoteService.getAllSavedQuotesForUser("testUser")).thenReturn(quoteList);
+        String t1 =quoteService.getAllSavedTagsForUser("testUser").get(0).getTag();
         assertEquals("t1",t1);
     }
 }

@@ -10,6 +10,8 @@ import com.quotespilot.repository.TagsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -35,23 +37,35 @@ public class QuoteServiceImpl implements QuoteService{
     private UserService userService;
     
     @Transactional
-    public List<Quote> getAllSavedQuotesForUser() {
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        logger.info("**************user="+userName);
+    public List<Quote> getAllSavedQuotesForUser(String userName) {
         return quoteRepository.findAllByUsers(userName.trim());
     }
 
+    @Cacheable(value = "userTags", key = "#userName")
     @Transactional
-    public List<Tags> getAllSavedTagsForUser() {
-        return this.getAllSavedQuotesForUser()
+    public List<Tags> getAllSavedTagsForUser(String userName) {
+        return tagsRepository.findTagsByUsers(userName)
+                .stream()
+                .distinct()
+                .collect(Collectors.toList());
+        /**
+         * Below code will work but it will hit multiple sql queries i.e for each quote
+         * it will call sql query to get it's tags
+         */
+       /* return this.getAllSavedQuotesForUser()
                 .stream()
                 .flatMap(q-> q.getTags().stream())
                 .distinct()
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());*/
     }
-
-    public List<Quote> getSavedQuotesByTagForUser(String tag) {
-        return this.getAllSavedQuotesForUser()
+    
+    @Transactional
+    public List<Quote> getSavedQuotesByTagForUser(String userName, String tag) {
+        return quoteRepository.findAllByTagsForUser(userName,tag);
+        /**
+         * Below Code works but it will call mutiple sql queries
+         */
+        /*return this.getAllSavedQuotesForUser()
                 .stream()
                 .filter(q->{
                     Set<Tags> tags = q.getTags();
@@ -60,18 +74,16 @@ public class QuoteServiceImpl implements QuoteService{
                     }
                     return false;
                 })
-                .collect(Collectors.toList());
-
-
+                .collect(Collectors.toList());*/
     }
 
     /**
      * remove the link between User who has called this method and Quote. Quote will stay in DB
      * @param id
      */
+    @CacheEvict(value = "userTags", key = "#userName")
     @Transactional
-    public void removeSavedQuotesForUser(Long id) {
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+    public void removeSavedQuotesForUser(String userName,Long id) {
         Quote quote = quoteRepository.findOneByUsers(id,userName);
         User u = userService.findByName(userName);
         if(quote != null){
@@ -98,9 +110,9 @@ public class QuoteServiceImpl implements QuoteService{
      * @param` dto
      * @return
      */
+    @CacheEvict(value = "userTags", key = "#userName")
     @Transactional
-    public Long addQuoteForUser(QuoteDTO dto) {
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+    public Long addQuoteForUser(String userName,QuoteDTO dto) {
         Quote quote=new Quote();
         User u = userService.findByName(userName);
         quote.setAuthor(dto.getAuthor());
