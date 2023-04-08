@@ -46,6 +46,7 @@ public class QuoteServiceImpl implements QuoteService{
         return this.getAllSavedQuotesForUser()
                 .stream()
                 .flatMap(q-> q.getTags().stream())
+                .distinct()
                 .collect(Collectors.toList());
     }
 

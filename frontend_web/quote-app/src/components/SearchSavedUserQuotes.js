@@ -1,16 +1,49 @@
-import axios from 'axios';
-import React, { Component } from 'react';
-//import { quotes } from '../data/quotes';
+import axios from "axios";
 import { useState } from "react";
-import Search from './Search';
+import Quote from "../services/Quote";
 import configData from "../config.json"
-import Quote from '../services/Quote';
+import Search from "./Search";
 
-function GetSavedUserQuotes () {
+function SearchSavedUserQuotes(){
     const [showQuotes, setShowQuotes] = useState(false);
+    const [showTags, setShowTags] = useState(false);
     const [list, setList]=useState([]);
-    let URL=configData.BACKEND_URL+"/quote/quotes-all";
-    function handleShowQuotes(){  
+    const [tags,setTags]=useState([]);
+    let TAG_URL=configData.BACKEND_URL+"/quote/tags";
+    let URL=configData.BACKEND_URL+"/quote/search-by-tag?tag=";
+    function handleShowTags(event){  
+        const token=localStorage.getItem('jwtToken');
+        const config = {
+            headers: { 
+                'Authorization': `Bearer ${token}` ,
+                'Access-Control-Allow-Origin': '*'
+            }
+        };
+        let tags=[];
+        tags=axios
+        .get(TAG_URL,config)
+        .then(
+            res=>{
+                setTags(res.data.map(
+                    t=>        
+                    <li className='list-group-item' key={t.id}>
+                        <div className='card' style={{width: '12rem'}}>
+                        <button className='btn btn-outline-primary' onClick={(event)=>handleShowQuotesByTag(event,t.tag)}>
+                                {t.tag}
+                            </button>
+                        </div>
+                    </li>           
+                )
+                 );
+            }
+        ).catch((err) => {
+            console.error(err);
+          });
+          setShowTags(true);
+    }  
+
+    function handleShowQuotesByTag(event,tag){  
+        console.log("searched quote by tag="+tag);
         let quotes=[];
         const token=localStorage.getItem('jwtToken');
         const config = {
@@ -20,13 +53,13 @@ function GetSavedUserQuotes () {
             }
         };
         quotes=axios
-        .get(URL,config)
+        .get(URL+tag,config)
         .then(
             res=>{
                 setList(res.data.map(
                     q=>        
                     <li className='list-group-item' key={q.id}>
-                        <div className='card' style={{width: '15rem'}}>
+                        <div className='card' style={{width: '18rem'}}>
                         <div className="card-header">{q.tags}</div>
                         <div className="card-body">
                         <blockquote class="blockquote mb-0">
@@ -50,20 +83,20 @@ function GetSavedUserQuotes () {
          
         setShowQuotes(true);
     }  
-
     function handleDeleteQuote(event,quote){
         Quote.removeQuote(quote);
         event.target.setAttribute("disabled", "disabled");
         event.target.innerHTML="Removed";
         event.target.parentNode.parentNode.parentNode.remove(event.target.parentNode.parentNode);
     }
-
     return(
         <div>
-            <button className='btn' onClick={handleShowQuotes}>Show My quotes</button>
+            <button className='btn' onClick={handleShowTags}>Show All saved Tags </button>
+            {showTags && <ul className='d-flex flex-wrap list-group-flush'>{tags}</ul>}
             {showQuotes && <ul className='d-flex flex-wrap list-group-flush'>{list}</ul>}
         </div>
     );    
+
 }
 
-export default GetSavedUserQuotes;
+export default SearchSavedUserQuotes;

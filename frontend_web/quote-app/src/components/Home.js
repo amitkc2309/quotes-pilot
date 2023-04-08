@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import GetSavedUserQuotes from "./GetSavedUserQuotes";
 import RandomQuote from "./RandomQuote";
 import SearchQuoteFromInternet from "./SearchQuoteFromInternet";
+import SearchSavedUserQuotes from "./SearchSavedUserQuotes";
 
 export default function Home(){
     const [value, setValue] = useState(1);
@@ -24,15 +25,15 @@ export default function Home(){
             <Tabs value={value} onChange={handleTabChange} textColor="primary" indicatorColor="primary">
                 <Tab label="Search Quote" value={1}/>
                 <Tab label="Random Quote" value={2}/>
-                <Tab label="My Quotes"  value={3}/>
-                {/* <Tab label="Search saved Quotes"  value={4}/> */}
-                
+                <Tab label="Search in saved Quotes"  value={3}/>
+                <Tab label="Saved Quotes"  value={4}/>     
              </Tabs>
              
             </Box>
             {value ==1 && <SearchQuoteFromInternet/>}
             {value ==2 && <RandomQuote/>}
-            {value ==3 && <GetSavedUserQuotes/>}
+            {value ==3 && <SearchSavedUserQuotes/>}
+            {value ==4 && <GetSavedUserQuotes/>}
             </div>
 
             <div className="col-1">

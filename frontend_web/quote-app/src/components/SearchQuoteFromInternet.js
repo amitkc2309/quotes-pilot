@@ -12,8 +12,6 @@ function SearchQuoteFromInternet () {
     const [list, setList]=useState([]);
     let URL=configData.BACKEND_URL+"/quote/search?query=";
     function handleShowQuotes(event){  
-        console.log("search started for keyword "+keyword);
-        URL=URL+keyword;
         const token=localStorage.getItem('jwtToken');
         const config = {
             headers: { 
@@ -23,7 +21,7 @@ function SearchQuoteFromInternet () {
         };
         let quotes=[];
         quotes=axios
-        .get(URL,config)
+        .get(URL+keyword,config)
         .then(
             res=>{
                 setList(res.data.map(
