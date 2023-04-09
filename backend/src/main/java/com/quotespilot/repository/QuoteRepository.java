@@ -11,20 +11,21 @@ import java.util.List;
 
 @Repository
 public interface QuoteRepository extends JpaRepository<Quote,Long> {
-    @Query(value = "select q.* from user u inner join user_quote uq inner join quotes q " +
-            "on q.id=uq.quote_id " +
-            "and u.id=uq.user_id " +
-            "and u.name=:user", nativeQuery = true)
+    //Using JPQL
+    @Query(value = "SELECT q FROM Quote q " +
+            "JOIN q.users u " +
+            //Notice JOIN FETCH of JPQL. It will solve N+1 problem. i.e 
+            // Tags will be fetched along with Quote only in a single query 
+            // instead of firing separate SQL query for tags
+            "JOIN FETCH q.tags t " +
+            "WHERE u.name =:user " )
     List<Quote> findAllByUsers(@Param("user") String user);
 
-    @Query(value = "select q.* from " +
-            "user u inner join user_quote uq inner join quotes q inner join tags t inner join quote_tag qt " +
-            "on q.id=uq.quote_id " +
-            "and qt.tag_id =t.id " +
-            "and uq.quote_id=qt.quote_id " +
-            "and u.id=uq.user_id " +
-            "and u.name=:user " +
-            "and t.tag=:tag", nativeQuery = true)
+    @Query(value = "SELECT q FROM Quote q " +
+            "JOIN q.users u " +
+            "JOIN FETCH q.tags t " +
+            "WHERE u.name =:user " +
+            "and t.tag=:tag" )
     List<Quote> findAllByTagsForUser(@Param("user") String user, @Param("tag") String tag);
 
     @Query(value = "select q.* from user u inner join user_quote uq inner join quotes q " +
