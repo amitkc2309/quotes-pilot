@@ -3,6 +3,7 @@ import { useState } from "react";
 import RegisterPage from "./RegisterPage";
 import configData from "../config.json"
 import { Link, useNavigate } from "react-router-dom";
+import jwtDecode from "jwt-decode";
 
 export default function LoginPage(){
     const [user,setUser]=useState("");
@@ -18,23 +19,27 @@ export default function LoginPage(){
     }
     let URL=configData.BACKEND_URL+"/login/";
     function handleLogin(event){
-        event.preventDefault();
-        localStorage.clear();
-        axios
-        .post(URL, {
-            name: user,
-            password: password
-            })
-            .then((res) => {
-                //console.log(res.data);
-                const jwt=res.data;
-                setError("");
-                localStorage.setItem('jwtToken', jwt);
-                navigate("/home");
-             }).catch((err) => {
-                console.error(err.response.data.message);
-                setError("Wrong credentials");
-              });
+        if (user && password) {
+            event.preventDefault();
+            localStorage.clear();
+            axios
+                .post(URL, {
+                    name: user,
+                    password: password
+                })
+                .then((res) => {
+                    //console.log("user="+user+" password="+password +" res="+res.data);
+                    const jwt = res.data;
+                    setError("");
+                    localStorage.setItem('jwtToken', jwt);
+                    const decoded=jwtDecode(jwt);
+                    localStorage.setItem('loggedUser', decoded.sub);
+                    navigate("/home");
+                }).catch((err) => {
+                    setError("Wrong credentials");
+                });
+        }
+        setError("Please provide input");
     }
 
     return(

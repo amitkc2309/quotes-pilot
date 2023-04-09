@@ -18,18 +18,22 @@ export default function RegisterPage(){
     }
     let URL=configData.BACKEND_URL+"/register/";
     function handleRegister(event){
-        event.preventDefault();
-        axios.post(URL, {
-        name: user,
-        password: password
-        })
-        .then((res) => {
-            console.log(res.data);
-            setResponse(res.data);
-         }).catch((err) => {
-            console.error(err.response.data.message);
-            setResponse("User already exist");
-          });
+        if (user && password) {
+            event.preventDefault();
+            axios.post(URL, {
+                name: user,
+                password: password
+            })
+                .then((res) => {
+                    console.log(res.data);
+                    setResponse(res.data);
+                }).catch((err) => {
+                    console.error(err.response.data.message);
+                    setResponse("User already exist");
+                });
+
+        }
+        setResponse("Please provide input");   
     }
 
     return(

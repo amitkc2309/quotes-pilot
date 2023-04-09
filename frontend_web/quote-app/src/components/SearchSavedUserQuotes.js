@@ -27,7 +27,7 @@ function SearchSavedUserQuotes(){
                 setTags(res.data.map(
                     t=>        
                     <li className='list-group-item' key={t.id}>
-                        <div className='card' style={{width: '12rem'}}>
+                        <div className='card' style={{width: '10rem'}}>
                         <button className='btn btn-outline-primary' onClick={(event)=>handleShowQuotesByTag(event,t.tag)}>
                                 {t.tag}
                             </button>

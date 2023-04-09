@@ -9,6 +9,7 @@ import SearchSavedUserQuotes from "./SearchSavedUserQuotes";
 export default function Home(){
     const [value, setValue] = useState(1);
     const navigate = useNavigate();
+    const [showLogout,setShowLogout] = useState(false);
 
     function handleTabChange(event, selected){
         setValue(selected);
@@ -37,7 +38,15 @@ export default function Home(){
             </div>
 
             <div className="col-1">
-                <button className="btn btn-outline-primary" onClick={logout}>Log-Out</button>
+                    <div className="dropdown">
+                        <button className="btn btn-primary dropdown-toggle"
+                        onClick={()=>setShowLogout(!showLogout)}>
+                           Welcome {localStorage.getItem('loggedUser')}
+                        </button>
+                        <div className={showLogout ? "dropdown-menu show btn btn-primary" : "dropdown-menu"}>
+                            <button className="dropdown-item" type="button" onClick={logout}>Logout</button>
+                        </div>
+                    </div>
             </div>
             </div>
         </div>

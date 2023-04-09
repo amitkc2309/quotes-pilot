@@ -8,6 +8,6 @@ public interface UserService {
     void save(User user);
     User findByName(String name);
     Long createUser(UserDTO user) throws Exception;
-    public String login(UserDTO dto);
+    public String login(UserDTO dto) throws Exception;
     User checkCredentials(String inputUsername, String inputPassword);
 }

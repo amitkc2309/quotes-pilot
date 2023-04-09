@@ -13,6 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -50,6 +51,8 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public Long createUser(UserDTO dto) throws Exception {
+        if(StringUtils.isEmpty(dto.getName()) || StringUtils.isEmpty(dto.getPassword()))
+            throw new Exception("No input provided");
         if(this.findByName(dto.getName()) !=null) throw new Exception("User already exist");
         String salt=BCrypt.gensalt();
         String hashedPassword = passwordEncoder.encode(dto.getPassword()+salt);
@@ -61,7 +64,9 @@ public class UserServiceImpl implements UserService{
         return userRepository.save(user).getId();
     }
     
-    public String login(UserDTO dto){
+    public String login(UserDTO dto) throws Exception{
+        if(StringUtils.isEmpty(dto.getName()) || StringUtils.isEmpty(dto.getPassword()))
+            throw new Exception("No input provided");
         UsernamePasswordAuthenticationToken token =new UsernamePasswordAuthenticationToken(dto.getName(),dto.getPassword());
         //UserAuthenticationProvider's authenticate() will be called
         authenticationManager.authenticate(token);

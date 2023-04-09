@@ -9,8 +9,10 @@ import AuthenticateRoute from './components/AuthenticateRoute';
 
 function App() {
   return (
-    <div className="container">
-     <h2 className='modal-header card-header' style={{color: 'blue'}}>Quote-Pilot</h2>    
+    <div className="app">
+       <header className="App-header">
+       <h2>Quote-Pilot</h2>
+      </header> 
      <BrowserRouter>
         <Routes>
           <Route path="/" exact element={<LoginPage/>} />
