@@ -3,6 +3,7 @@ package com.quotespilot;
 import com.quotespilot.entity.Quote;
 import com.quotespilot.entity.Tags;
 import com.quotespilot.repository.QuoteRepository;
+import com.quotespilot.repository.TagsRepository;
 import com.quotespilot.service.QuoteService;
 import com.quotespilot.service.QuoteServiceImpl;
 import org.junit.Before;
@@ -30,8 +31,13 @@ public class QuotesServiceTest {
     
     @Mock
     QuoteRepository quoteRepository;
+
+    @Mock
+    TagsRepository tagsRepository;
     
     List<Quote> quoteList=new ArrayList();
+
+    List<Tags> tagList=new ArrayList();
     
     SecurityContextHolder securityContextHolder;
     
@@ -45,15 +51,10 @@ public class QuotesServiceTest {
         t1.setTag("t1");
         q1.getTags().add(t1);
         quoteList.add(q1);
-    }
 
-    @Before
-    public void mockAuthentication() {
-        Authentication auth = mock(Authentication.class);
-        when(auth.getName()).thenReturn("testUser");
-        SecurityContext securityContext = mock(SecurityContext.class);
-        when(securityContext.getAuthentication()).thenReturn(auth);
-        SecurityContextHolder.setContext(securityContext);
+        Tags t2=new Tags();
+        t2.setTag("t2");
+        tagList.add(t2);
     }
     
     @Test
@@ -65,8 +66,8 @@ public class QuotesServiceTest {
 
     @Test
     public void testgetAllSavedTagsForUser(){
-        when(quoteService.getAllSavedQuotesForUser("testUser")).thenReturn(quoteList);
-        String t1 =quoteService.getAllSavedTagsForUser("testUser").get(0).getTag();
-        assertEquals("t1",t1);
+        when(tagsRepository.findTagsByUsers("testUser")).thenReturn(tagList);
+        String t2 =quoteService.getAllSavedTagsForUser("testUser").get(0).getTag();
+        assertEquals("t2",t2);
     }
 }
