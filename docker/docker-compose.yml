@@ -1,7 +1,7 @@
 version: "3.1"
 services:
   backend:
-    container_name: quote-pilot-backend
+    container_name: quotes-pilot
     image: amitking2309/quotes-pilot:0.0.1-SNAPSHOT
     environment:
       - RDS_HOSTNAME=mysql
@@ -12,6 +12,15 @@ services:
         condition: service_healthy
     networks:
       - net
+        
+  frontend:
+    container_name: quotes-pilot-frontend
+    image: amitking2309/quotes-pilot-frontend:latest
+    ports:
+      - "3000:80"
+    networks:
+      - net  
+    
   mysql:
     container_name: mysql
     image: mysql
