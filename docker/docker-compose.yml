@@ -1,0 +1,29 @@
+version: "3.1"
+services:
+  backend:
+    container_name: quote-pilot-backend
+    image: amitking2309/quotes-pilot:0.0.1-SNAPSHOT
+    environment:
+      - RDS_HOSTNAME=mysql
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mysql
+    networks:
+      - net
+  mysql:
+    container_name: mysql
+    image: mysql
+    environment:
+      - MYSQL_USER=sa
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=quotedb
+      - MYSQL_ROOT_PASSWORD=password
+    ports:
+      - "3306:3306"
+    networks:
+      - net
+networks:
+  net:
+    external:
+      name: dedicated
