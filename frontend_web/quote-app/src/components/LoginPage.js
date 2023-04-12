@@ -10,6 +10,7 @@ export default function LoginPage() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    localStorage.clear();
 
     function handleUserEvent(event) {
         setUser(event.target.value);
@@ -21,7 +22,6 @@ export default function LoginPage() {
     function handleLogin(event) {
         if (user && password) {
             event.preventDefault();
-            localStorage.clear();
             axios
                 .post(URL, {
                     name: user,
@@ -39,7 +39,9 @@ export default function LoginPage() {
                     setError("Wrong credentials");
                 });
         }
-        setError("Please provide input");
+        else{
+            setError("Please provide input");
+        }
     }
 
     return (

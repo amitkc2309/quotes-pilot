@@ -33,7 +33,9 @@ export default function RegisterPage() {
                 });
 
         }
-        setResponse("Please provide input");
+        else{
+            setResponse("Please provide input");
+        }
     }
 
     return (
