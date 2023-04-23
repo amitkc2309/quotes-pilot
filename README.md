@@ -8,7 +8,7 @@ Application's Backend is written in Spring-boot and Frontend is designed in reac
 - Download [docker-compose.yml](https://github.com/amitkc2309/quotes-pilot/blob/main/docker/docker-compose.yml)
 - Start application in your local by running command `docker compose up -d`. The command should be run on the same path where docker-compose.yml is present.
 - Once docker has downloaded all the required images, the application will be running on `http://localhost:3000/`
-- Register a new user using UI and the you can start using the application.
+- Register a new user using UI and then you can start using the application.
 
 ## Running Application in Development Mode
 You can play with the code, make changes and quickly generate your own image of the application.
