@@ -19,8 +19,8 @@ You can play with the code, make changes and quickly generate your own image of 
 - Provide your own docker registery path in pom.xml (inside `<repository>` section of `<artifactId>dockerfile-maven-plugin</artifactId>`)
 - run `mvn package`, It will start backend on `http://localhost:5000/`. It will also create a new docker image for your backend code in local.
 - Now for the front end, import [Front-end code](https://github.com/amitkc2309/quotes-pilot/tree/main/frontend_web/quote-app) in your favourite IDE like VS-Code.
-- Make changes and run `npm start` to start the application on 'http://localhost:3000/` to test.
-- Go to [front-end docker file](https://github.com/amitkc2309/quotes-pilot/blob/main/frontend_web/quote-app/Dockerfile) and run  docker build -t <your-docker-registery>/quotes-pilot-frontend. It will create a new docker image for your frontend code in local.
+- Make changes and run `npm start` to start the application on `http://localhost:3000/` to test.
+- Go to [front-end docker file](https://github.com/amitkc2309/quotes-pilot/blob/main/frontend_web/quote-app/Dockerfile) and run  `docker build -t <your-docker-registery>/quotes-pilot-frontend`. It will create a new docker image for your frontend code in local.
 - Now, go to [docker-compose.yml](https://github.com/amitkc2309/quotes-pilot/blob/main/docker/docker-compose.yml) and provide your own docker-registery name as the value of `image` variable.
 - Start application in your local by running command `docker compose up -d`.
 
@@ -43,7 +43,7 @@ like this-
     }
     ```
    If login is successful then code will return an JWT token.
-- Use JWT token returned as the repose of `/login` request, in the headers for all subsequent requests. The token shoule be sent as a Bearer token in Authorization header-
+- Use JWT token returned as the response of `/login` request, in the headers for all subsequent requests. The token shoule be sent as a Bearer token in Authorization header-
 `Authorization` : `Bearer ${JWT token}` 
 
 ## Available REST end-points.
