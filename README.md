@@ -17,7 +17,7 @@ You can play with the code, make changes and quickly generate your own image of 
 - Import [Java backend project](https://github.com/amitkc2309/quotes-pilot/tree/main/backend) in an IDE like IntelliJ or Eclipse.
 - Make changes in the code as per your need.
 - Provide your own docker registery path in pom.xml (inside `<repository>` section of `<artifactId>dockerfile-maven-plugin</artifactId>`)
-- run `mvn package`, It will start backend on `http://localhost:5000/`. It will also create a new docker image for your backend code in local.
+- run `mvn package`, It will generate deployables and also create a new docker image for your backend code in local.
 - Now for the front end, import [Front-end code](https://github.com/amitkc2309/quotes-pilot/tree/main/frontend_web/quote-app) in your favourite IDE like VS-Code.
 - Make changes and run `npm start` to start the application on `http://localhost:3000/` to test.
 - Go to [front-end docker file](https://github.com/amitkc2309/quotes-pilot/blob/main/frontend_web/quote-app/Dockerfile) and run  `docker build -t <your-docker-registery>/quotes-pilot-frontend`. It will create a new docker image for your frontend code in local.
