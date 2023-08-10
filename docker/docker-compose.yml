@@ -40,5 +40,5 @@ services:
       - net
 networks:
   net:
-    external:
-      name: dedicated
+    name: dedicated
+
