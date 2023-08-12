@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.service: backend
+  name: backend
+  namespace: quotes-pilot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.service: backend
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app.network/dedicated: "true"
+        app.service: backend
+    spec:
+      containers:
+        - env:
+            - name: RDS_HOSTNAME
+              value: mysql
+            - name: FRONT_END_APP_ORIGIN
+              value: '*'
+          image: amitking2309/quotes-pilot:0.0.1-SNAPSHOT
+          name: quotes-pilot
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3306
+          ports:
+            - containerPort: 5000
+              hostPort: 5000
+              protocol: TCP
+          resources: {}
+      restartPolicy: Always
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.service: backend
+  name: backend
+  namespace: quotes-pilot
+spec:
+  ports:
+    - name: "5000"
+      port: 5000
+      targetPort: 5000
+  type: NodePort
+  selector:
+    app.service: backend
+status:
+  loadBalancer: {}
+

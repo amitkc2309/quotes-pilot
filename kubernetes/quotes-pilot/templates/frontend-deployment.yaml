@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.service: frontend
+  name: frontend
+  namespace: quotes-pilot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.service: frontend
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app.network/dedicated: "true"
+        app.service: frontend
+    spec:
+      containers:
+        - image: amitking2309/quotes-pilot-frontend:latest
+          name: quotes-pilot-frontend
+          ports:
+            - containerPort: 80
+              hostPort: 3000
+              protocol: TCP
+          resources: {}
+      restartPolicy: Always
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.service: frontend
+  name: frontend
+  namespace: quotes-pilot
+spec:
+  ports:
+    - name: "3000"
+      port: 3000
+      targetPort: 80
+  type: NodePort
+  selector:
+    app.service: frontend
+status:
+  loadBalancer: {}

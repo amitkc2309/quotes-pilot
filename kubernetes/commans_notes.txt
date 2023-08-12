@@ -1,0 +1,28 @@
+helm package quotes-pilot
+helm install quotes-pilot quotes-pilot-0.1.0.tgz
+helm uninstall quotes-pilot
+helm list
+
+kubectl create namespace quotes-pilot
+kubectl get pods --namespace=quotes-pilot
+kubectl get services --namespace=quotes-pilot
+kubectl logs backend-6f7f9554b7-hwbnm --namespace=quotes-pilot
+
+
+expose api-gateway->
+minikube service frontend --url --namespace=quotes-pilot
+# minikube service backend --url --namespace=quotes-pilot
+
+Individual install->
+kubectl apply -f mysql-deployment.yaml
+wait 2 mins
+kubectl apply -f backend-deployment.yaml
+kubectl apply -f frontend-deployment.yaml
+
+1. Kubernetes pods can connect internally using 'service' name. For example 'backend' is connected to 'mysql'.
+2. But, We can not connect React front-end to 'backend' using service name. Because React is running on browser and browser does not recognise any of the services running on kubernetes i.e it does not know what 'backend' means. Meaning from front-end we will connect to backend using backend's URL only. 
+Here also we have a problem, On local machine kubernetes will not let you connect to http://localhost:5000 and you will get ERR_CONNECTION_REFUSED error while react will try to connect to backend (wasted 5+ hours here and realized chatGPT is shit).
+This error will not happen on production environment(If Tech bloggers are right) because backend will have a domain name but on local machine we can port forward 5000 port to backend service (Or whatever the below command means, It just works)-
+
+kubectl port-forward service/backend 5000:5000 --namespace quotes-pilot
+
