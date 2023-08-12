@@ -1,7 +1,9 @@
+import React from 'react'
+import ReactDOM from 'react-dom'
 import axios from "axios";
 import { useState } from "react";
 import RegisterPage from "./RegisterPage";
-import configData from "../config.json"
+import { BACKEND_URL } from "../config.js"
 import { Link, useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 
@@ -18,7 +20,7 @@ export default function LoginPage() {
     function handlePasswordEvent(event) {
         setPassword(event.target.value);
     }
-    let URL = configData.BACKEND_URL + "/login/";
+    let URL = BACKEND_URL + "/login/";
     function handleLogin(event) {
         if (user && password) {
             event.preventDefault();

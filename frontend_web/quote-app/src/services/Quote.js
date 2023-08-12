@@ -1,9 +1,9 @@
 import axios from "axios";
-import configData from "../config.json"
+import { BACKEND_URL } from "../config.js"
 
 class Quote{
      saveQuote(quote){
-        let URL=configData.BACKEND_URL+"/quote/add-quote/";
+        let URL=BACKEND_URL+"/quote/add-quote/";
         const token=localStorage.getItem('jwtToken');
         const config = {
             headers: { 
@@ -30,7 +30,7 @@ class Quote{
     }
     
     removeQuote(quote){
-        let URL=configData.BACKEND_URL+"/quote/remove-quote/";
+        let URL=BACKEND_URL+"/quote/remove-quote/";
         URL=URL+quote.id;
         console.log("deleting for quote id="+URL)
         const token=localStorage.getItem('jwtToken');

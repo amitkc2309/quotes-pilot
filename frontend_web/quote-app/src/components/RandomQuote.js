@@ -2,13 +2,13 @@ import axios from 'axios';
 import React, { Component } from 'react';
 //import { quotes } from '../data/quotes';
 import { useState } from "react";
-import configData from "../config.json"
+import { BACKEND_URL } from "../config.js"
 import Quote from '../services/Quote';
 
 function RandomQuote () {
     const [showQuotes, setShowQuotes] = useState(false);
     const [data, setData]=useState([]);
-    let URL=configData.BACKEND_URL+"/quote/random";
+    let URL=BACKEND_URL+"/quote/random";
     function handleShowQuotes(){
         const token=localStorage.getItem('jwtToken');
         const config = {

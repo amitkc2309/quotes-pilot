@@ -1,3 +1,5 @@
+import React from 'react'
+import ReactDOM from 'react-dom'
 import { useState } from "react";
 
 export default function Search ({searchLabel, action, setKeyword}){

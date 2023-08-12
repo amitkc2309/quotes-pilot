@@ -1,4 +1,4 @@
-# use this command to create image- docker build -t amitking2309/quotes-pilot-frontend .
+# use this command to create image- docker build --build-arg REACT_APP_BACKEND_URL="http://localhost:5000" -t amitking2309/quotes-pilot-frontend .
 # using docker multistage build
 #stage 1
 FROM node:17-alpine as builder
@@ -8,8 +8,14 @@ WORKDIR /app
 COPY . .
 # Install dependencies
 RUN npm install --force
+
+ARG REACT_APP_BACKEND_URL
+RUN sh create-env-file.sh REACT_APP_BACKEND_URL=$REACT_APP_BACKEND_URL
+# debug the .env file
+# CMD ["cat", ".env"]
+
 # Build the app
-RUN npm run build
+ RUN npm run build
 
 #stage 2
 # after this stage the final container will only contain build folder and nothing else

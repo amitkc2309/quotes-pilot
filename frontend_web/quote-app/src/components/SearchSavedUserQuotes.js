@@ -1,7 +1,9 @@
+import React from 'react'
+import ReactDOM from 'react-dom'
 import axios from "axios";
 import { useState } from "react";
 import Quote from "../services/Quote";
-import configData from "../config.json"
+import { BACKEND_URL } from "../config.js"
 import Search from "./Search";
 
 function SearchSavedUserQuotes(){
@@ -9,8 +11,8 @@ function SearchSavedUserQuotes(){
     const [showTags, setShowTags] = useState(false);
     const [list, setList]=useState([]);
     const [tags,setTags]=useState([]);
-    let TAG_URL=configData.BACKEND_URL+"/quote/tags";
-    let URL=configData.BACKEND_URL+"/quote/search-by-tag?tag=";
+    let TAG_URL=BACKEND_URL+"/quote/tags";
+    let URL=BACKEND_URL+"/quote/search-by-tag?tag=";
     function handleShowTags(event){  
         const token=localStorage.getItem('jwtToken');
         const config = {

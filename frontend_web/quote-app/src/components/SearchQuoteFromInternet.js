@@ -1,16 +1,17 @@
+import ReactDOM from 'react-dom'
 import axios from 'axios';
 import React, { Component } from 'react';
 //import { quotes } from '../data/quotes';
 import { useState } from "react";
 import Search from './Search';
-import configData from "../config.json"
+import { BACKEND_URL } from "../config.js"
 import Quote from '../services/Quote';
 
 function SearchQuoteFromInternet () {
     const [showQuotes, setShowQuotes] = useState(false);
     const [keyword,setKeyword]=useState("");
     const [list, setList]=useState([]);
-    let URL=configData.BACKEND_URL+"/quote/search?query=";
+    let URL=BACKEND_URL+"/quote/search?query=";
     function handleShowQuotes(event){  
         const token=localStorage.getItem('jwtToken');
         const config = {

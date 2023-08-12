@@ -3,13 +3,13 @@ import React, { Component } from 'react';
 //import { quotes } from '../data/quotes';
 import { useState } from "react";
 import Search from './Search';
-import configData from "../config.json"
+import { BACKEND_URL }  from "../config.js"
 import Quote from '../services/Quote';
 
 function GetSavedUserQuotes () {
     const [showQuotes, setShowQuotes] = useState(false);
     const [list, setList]=useState([]);
-    let URL=configData.BACKEND_URL+"/quote/quotes-all";
+    let URL=BACKEND_URL+"/quote/quotes-all";
     function handleShowQuotes(){  
         let quotes=[];
         const token=localStorage.getItem('jwtToken');

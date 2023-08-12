@@ -1,7 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
+import React from 'react'
+import ReactDOM from 'react-dom'
 import LoginPage from "./LoginPage";
-import configData from "../config.json"
+import  { BACKEND_URL }  from "../config.js"
 import { Link } from "react-router-dom";
 import { Card } from "@material-ui/core";
 
@@ -16,7 +18,7 @@ export default function RegisterPage() {
     function handlePasswordEvent(event) {
         setPassword(event.target.value);
     }
-    let URL = configData.BACKEND_URL + "/register/";
+    let URL =  BACKEND_URL+"/register/";
     function handleRegister(event) {
         if (user && password) {
             event.preventDefault();

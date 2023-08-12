@@ -1,3 +1,5 @@
+import React from 'react'
+import ReactDOM from 'react-dom'
 import axios from "axios";
 import { useEffect, useState } from "react";
 import RegisterPage from "./RegisterPage";
