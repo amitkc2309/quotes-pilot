@@ -26,3 +26,6 @@ This error will not happen on production environment(If Tech bloggers are right)
 
 kubectl port-forward service/backend 5000:5000 --namespace quotes-pilot
 
+deleting a pvc forcefully-
+kubectl patch pvc mysql-pv-claim --namespace=quotes-pilot -p '{"metadata":{"finalizers":null}}'
+

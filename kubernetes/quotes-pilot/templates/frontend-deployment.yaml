@@ -22,8 +22,8 @@ spec:
           name: quotes-pilot-frontend
           ports:
             - containerPort: 80
-              hostPort: 3000
-              protocol: TCP
+              #hostPort: 3000
+              #protocol: TCP
           resources: {}
       restartPolicy: Always
 status: {}

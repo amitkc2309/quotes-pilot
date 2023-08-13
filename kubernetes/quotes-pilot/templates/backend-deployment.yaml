@@ -6,7 +6,7 @@ metadata:
   name: backend
   namespace: quotes-pilot
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app.service: backend
@@ -23,6 +23,8 @@ spec:
               value: mysql
             - name: FRONT_END_APP_ORIGIN
               value: '*'
+            - name: LOGGING_LEVEL_COM_QUOTESPILOT
+              value: INFO
           image: amitking2309/quotes-pilot:0.0.1-SNAPSHOT
           name: quotes-pilot
           readinessProbe:
@@ -31,8 +33,8 @@ spec:
               port: 3306
           ports:
             - containerPort: 5000
-              hostPort: 5000
-              protocol: TCP
+              #hostPort: 5000
+              #protocol: TCP
           resources: {}
       restartPolicy: Always
 status: {}
